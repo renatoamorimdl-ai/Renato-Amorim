@@ -1,34 +1,44 @@
 (function () {
   'use strict';
 
-  /* ====== CONFIGURAÇÃO — edite aqui ====== */
+  /* ====== CONFIGURAÇÃO ====== */
   var WHATSAPP = '5581995701768'; // DDI + DDD + número, só dígitos
-  /* ======================================= */
+  var DEFAULT_MSG = 'Olá! Vim pelo site e gostaria de um diagnóstico de tráfego para o meu negócio.';
+  /* ========================== */
+
+  function waLink(text) {
+    return 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(text);
+  }
 
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 
+  // Links de WhatsApp (botão flutuante e rodapé)
+  Array.prototype.forEach.call(document.querySelectorAll('[data-wa]'), function (a) {
+    a.href = waLink(DEFAULT_MSG);
+  });
+
   // Menu mobile
   var burger = document.getElementById('burger');
   var nav = document.getElementById('nav');
+  function closeMenu() {
+    if (!nav || !burger) return;
+    nav.classList.remove('is-open');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Abrir menu');
+  }
   if (burger && nav) {
     burger.addEventListener('click', function () {
       var open = nav.classList.toggle('is-open');
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      burger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
     });
     nav.addEventListener('click', function (e) {
-      if (e.target.tagName === 'A') {
-        nav.classList.remove('is-open');
-        burger.setAttribute('aria-expanded', 'false');
-      }
+      if (e.target.tagName === 'A') closeMenu();
     });
-  }
-
-  // Botão flutuante do WhatsApp
-  var wa = document.getElementById('waFloat');
-  if (wa) {
-    var msg = 'Olá! Vim pelo site e gostaria de um diagnóstico de tráfego para o meu negócio.';
-    wa.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeMenu();
+    });
   }
 
   // Formulário -> WhatsApp
@@ -56,55 +66,7 @@
         'Objetivo: ' + objetivo + '\n\n' +
         'Gostaria de um diagnóstico gratuito.';
 
-      window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
-    });
-  }
-
-  // Contadores animados
-  function animateCount(el) {
-    var target = parseFloat(el.getAttribute('data-count'));
-    var suffix = el.getAttribute('data-suffix') || '';
-    var dur = 1400;
-    var start = null;
-    function step(ts) {
-      if (!start) start = ts;
-      var p = Math.min((ts - start) / dur, 1);
-      var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * eased) + suffix;
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var counters = document.querySelectorAll('[data-count]');
-
-  if ('IntersectionObserver' in window && !reduce) {
-    var co = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) {
-          animateCount(en.target);
-          co.unobserve(en.target);
-        }
-      });
-    }, { threshold: 0.4 });
-    counters.forEach(function (c) { co.observe(c); });
-
-    // Reveal on scroll
-    var targets = document.querySelectorAll('.stat, .card, .feat, .steps li, .flow__step, .ladder li, .faq details, .pains li');
-    targets.forEach(function (t) { t.classList.add('reveal'); });
-    var ro = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) {
-          en.target.classList.add('is-in');
-          ro.unobserve(en.target);
-        }
-      });
-    }, { threshold: 0.12 });
-    targets.forEach(function (t) { ro.observe(t); });
-  } else {
-    counters.forEach(function (c) {
-      c.textContent = c.getAttribute('data-count') + (c.getAttribute('data-suffix') || '');
+      window.open(waLink(text), '_blank', 'noopener');
     });
   }
 })();

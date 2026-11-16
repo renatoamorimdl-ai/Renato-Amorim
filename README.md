@@ -1,27 +1,24 @@
-# Site — Gestão de Tráfego
+# Retra — site de gestão de tráfego
 
-Site estático (HTML + CSS + JS puro), sem build. Pronto para GitHub + Vercel.
+Site estático (HTML + CSS + JS puro), sem build. Deploy automático na Vercel a cada push na `main`.
 
-## Antes de publicar, edite
+## Estrutura
 
-1. `script.js` → `WHATSAPP` (já configurado: 5581995701768).
-2. `index.html` → se trocar de domínio, atualize canonical e og:url.
-3. `index.html` → ajuste nome/marca, serviços e FAQ ao seu gosto.
-4. Quando tiver cases reais, adicione uma seção de prova social (depoimentos e resultados autorizados pelos clientes).
+- `index.html`, `styles.css`, `script.js` — página única
+- `img/logo-mark.svg` — logo (R) vetorizada; `favicon.svg` e `img/apple-touch-icon.png` derivados dela
+- `img/hero.webp` e recortes (`sobre`, `meta`, `google`, `conversao`, `funil`, `resultado`) — todos feitos a partir da foto do Renato
+- `img/og.jpg` — imagem de pré-visualização ao compartilhar o link (WhatsApp, redes)
 
-## Publicar (GitHub + Vercel)
+## Identidade
 
-Repositório: https://github.com/renatoamorimdl-ai/Renato-Amorim (branch `main`).
+Preto `#0a0a0a`, branco e verde `#19d18a`, sem gradientes. Títulos em Poppins, texto em Inter.
 
-Em vercel.com → **Add New → Project** → importe o repositório.
-Framework Preset: **Other** (sem build command, sem output directory). Clique em **Deploy**.
+## Configuração
 
-Cada `git push` na `main` gera um novo deploy automaticamente.
+- WhatsApp: `script.js` → `WHATSAPP` (5581995701768)
+- Domínio: se trocar, atualize `canonical` e `og:url` no `index.html`
 
-## Domínio próprio
+## Pendências sugeridas
 
-Vercel → Project → Settings → Domains → adicione o domínio e aponte o DNS conforme indicado.
-
-## Rastreamento (recomendado)
-
-Adicione antes do `</head>` do `index.html`: Pixel da Meta, tag do Google (GA4/Google Ads). Dispare o evento de conversão (Lead / Contact) no clique do botão de WhatsApp e no envio do formulário.
+- Prova social com resultados e depoimentos reais autorizados pelos clientes
+- Pixel da Meta e Google (GA4/Ads) no `<head>`, com conversão no clique do WhatsApp e no envio do formulário
